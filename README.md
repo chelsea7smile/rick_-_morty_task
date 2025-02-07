@@ -48,7 +48,7 @@ Instead of using getServerSideProps, we fetch the detailed information about the
 	
  •	Render the character details, including the image, status, species, gender, and episodes they appear in.
 
-Display Characters
+3. Display Characters
 
 •	Render the list of characters with relevant information like name, image, status, etc.
 
@@ -63,26 +63,6 @@ Search by Name
 Filter by Status, Species, and Gender
 
 •	Add multi-select filters to allow users to filter characters by status, species, and gender, if supported by the API.
-
-3. Character Page
-
-nstead of using getServerSideProps, we fetch the detailed information about the character from the API using Redux and Redux Toolkit.
-	1.	Create a Redux slice for character details:
-	•	A Redux slice is created to manage the character data, including the loading and error states.
-	2.	Add the slice to your Redux store:
-	•	The slice is added to the Redux store configuration to manage state across the app.
-	3.	Dispatch the action in the Character page:
-	•	In the Character page component, we use the useDispatch hook to dispatch the fetchCharacterDetails action and useSelector to retrieve the character data from the Redux store.
-	4.	Display Character Info:
-	•	Render the character details, including the image, status, species, gender, and episodes they appear in.
-
-Display Character Info
-
-•	Show character details such as image, status, species, gender, origin, and episodes they appear in.
-
-Episode List
-
-•	Display a list of episodes the character appears in, with links to individual episode pages.
 
 4. Episodes Page
 
