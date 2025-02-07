@@ -1,40 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+My Rick and Morty App (https://rick-morty-task-dun.vercel.app/)
 
-## Getting Started
+This is a Next.js project that interacts with the Rick and Morty API, providing pages for characters, episodes, and locations with features like pagination, search, and filtering.
 
-First, run the development server:
+1. Project Setup
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Initialize Next.js
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To set up the project, run the following command:
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+`npx create-next-app@latest my-rick-morty-app --ts`
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Install Dependencies
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+Install the necessary dependencies:
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`npm install @reduxjs/toolkit react-redux react-hook-form zod tailwindcss`
 
-## Learn More
+Configure Tailwind CSS
 
-To learn more about Next.js, take a look at the following resources:
+Follow the official Tailwind CSS installation guide to set it up in your Next.js project.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+Create Redux Store
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Set up the Redux store and connect it to your app by following the Redux Toolkit documentation for configuration.
 
-## Deploy on Vercel
+2. Main Page (Characters)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Fetch Character Data
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+•	Use either getServerSideProps or RTK Query to fetch the list of characters from the API.
+
+Display Characters
+
+•	Render the list of characters with relevant information like name, image, status, etc.
+
+Pagination
+
+•	Implement pagination using the useRouter hook to manage URL parameters and navigate between character pages.
+
+Search by Name
+
+•	Implement a search feature to filter characters by name using the zod schema validation.
+
+Filter by Status, Species, and Gender
+
+•	Add multi-select filters to allow users to filter characters by status, species, and gender, if supported by the API.
+
+3. Character Page
+
+nstead of using getServerSideProps, we fetch the detailed information about the character from the API using Redux and Redux Toolkit.
+	1.	Create a Redux slice for character details:
+	•	A Redux slice is created to manage the character data, including the loading and error states.
+	2.	Add the slice to your Redux store:
+	•	The slice is added to the Redux store configuration to manage state across the app.
+	3.	Dispatch the action in the Character page:
+	•	In the Character page component, we use the useDispatch hook to dispatch the fetchCharacterDetails action and useSelector to retrieve the character data from the Redux store.
+	4.	Display Character Info:
+	•	Render the character details, including the image, status, species, gender, and episodes they appear in.
+
+Display Character Info
+
+•	Show character details such as image, status, species, gender, origin, and episodes they appear in.
+
+Episode List
+
+•	Display a list of episodes the character appears in, with links to individual episode pages.
+
+4. Episodes Page
+
+Fetch Episode Data
+
+•	Fetch the list of episodes from the API.
+
+Episode Filtering
+
+•	Add a reusable Zod form to filter episodes by name or episode code.
+
+Navigate to Episode Page
+
+•	Allow users to click on an episode to navigate to its detailed page.
+
+5. Locations Page
+
+Fetch Location Data
+
+•	Fetch the list of locations from the API.
+
+Location Filtering
+
+•	Allow filtering locations by name or type.
+
+Navigate to Location Page
+
+•	Enable navigation to a specific location page by clicking on a location.
+
+6. Additional Enhancements
+
+Responsive Design
+
+•	Ensure the app is fully responsive and works well on mobile devices using Tailwind CSS.
+
+Deployment on Vercel
+
+•	Deploy your application to Vercel by following the Vercel deployment guide.
+
+Enjoy exploring the world of Rick and Morty!
