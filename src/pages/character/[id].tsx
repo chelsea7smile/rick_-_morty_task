@@ -15,6 +15,8 @@ const CharacterPage = ({ character }: CharacterPageProps) => {
       <Image
         src={character.image}
         alt={character.name}
+        width={200}
+        height={200}
         className="w-64 h-64 object-cover rounded-lg shadow-lg"
       />
 
