@@ -28,7 +28,25 @@ Set up the Redux store and connect it to your app by following the Redux Toolkit
 
 Fetch Character Data
 
-•	Use either getServerSideProps or RTK Query to fetch the list of characters from the API.
+Fetch Character Details with Redux
+
+Instead of using getServerSideProps, we fetch the detailed information about the character from the API using Redux and Redux Toolkit.
+
+1.	Create a Redux slice for character details:
+ 
+•	A Redux slice is created to manage the character data, including the loading and error states.
+	
+ 2.	Add the slice to your Redux store:
+	
+ •	The slice is added to the Redux store configuration to manage state across the app.
+	
+ 3.	Dispatch the action in the Character page:
+	
+ •	In the Character page component, we use the useDispatch hook to dispatch the fetchCharacterDetails action and useSelector to retrieve the character data from the Redux store.
+	
+ 4.	Display Character Info:
+	
+ •	Render the character details, including the image, status, species, gender, and episodes they appear in.
 
 Display Characters
 
