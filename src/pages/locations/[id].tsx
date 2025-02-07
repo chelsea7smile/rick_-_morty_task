@@ -72,7 +72,10 @@ const LocationPage = () => {
 
         <div className="bg-gray-700 p-6 rounded-lg space-y-4">
           {locationsData?.results
-            .filter((loc) => !selectedType || loc.type === selectedType)
+            .filter((loc) => 
+              (!selectedType || loc.type === selectedType) &&
+              (!search || loc.name.toLowerCase().includes(search.toLowerCase()))
+            )
             .map((loc) => (
               <div
                 key={loc.id}

@@ -1,6 +1,7 @@
 import { GetServerSideProps } from 'next';
 import { Character } from '../../types/character';
 import Link from 'next/link';
+import Image from 'next/image';
 
 type CharacterPageProps = {
   character: Character;
@@ -11,7 +12,7 @@ const CharacterPage = ({ character }: CharacterPageProps) => {
     <div className="container mx-auto p-4 flex flex-col items-center text-center">
       <h1 className="text-4xl font-bold mb-6">{character.name}</h1>
 
-      <img
+      <Image
         src={character.image}
         alt={character.name}
         className="w-64 h-64 object-cover rounded-lg shadow-lg"
@@ -84,7 +85,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     return {
       props: { character },
     };
-  } catch (error) {
+  } catch {
     return { notFound: true };
   }
 };

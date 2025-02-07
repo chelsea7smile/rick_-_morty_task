@@ -1,15 +1,6 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { toggleTheme } from '@/store/themeSlice';
 import Link from 'next/link';
 
 const Header: React.FC = () => {
-  const dispatch = useDispatch();
-  const currentTheme = useSelector((state: any) => state.theme.isDark);
-
-  const handleThemeToggle = () => {
-    dispatch(toggleTheme());
-  };
-
   return (
     <header className="bg-gray-800 text-white py-4 px-8">
       <div className="flex justify-between items-center">

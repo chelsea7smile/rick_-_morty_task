@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler, Resolver } from 'react-hook-form';
 import { z } from 'zod';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearch, setFilter } from '@/store/formSlice';
@@ -30,41 +30,46 @@ const SearchFilterForm: React.FC<SearchFilterFormProps> = ({
   const dispatch = useDispatch();
   const { search, filters: storedFilters, error } = useSelector((state: RootState) => state.form);
 
+  // Define the zod validation schema
+  const schema = z.object({
+    search: z
+      .string()
+      .min(1, "Search field cannot be empty")
+      .max(100, "Search query is too long")
+      .regex(/^[a-zA-Z0-9\s-]*$/, "Only Latin letters, numbers, spaces, and dashes are allowed"),
+  });
+
+  // Define the resolver using zod
+  const resolver: Resolver<{ search: string }, Record<string, { message: string; type: string }>> = async (data) => {
+    try {
+      schema.parse(data);
+      return { values: data, errors: {} };
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        return {
+          values: {},
+          errors: err.errors.reduce((acc: Record<string, { message: string; type: string }>, e) => {
+            acc[e.path[0]] = { message: e.message, type: e.code };
+            return acc;
+          }, {}),
+        };
+      }
+      throw err;
+    }
+  };
+
   const { register, handleSubmit, formState: { errors }, setValue, clearErrors } = useForm({
     defaultValues: { search: initialSearchValue || search },
-    resolver: async (data) => {
-      try {
-        const schema = z.object({
-          search: z
-            .string()
-            .min(1, "Search field cannot be empty")
-            .max(100, "Search query is too long")
-            .regex(/^[a-zA-Z0-9\s-]*$/, "Only Latin letters, numbers, spaces, and dashes are allowed"),
-        });
-        schema.parse(data);
-        return { values: data, errors: {} };
-      } catch (err) {
-        if (err instanceof z.ZodError) {
-          return {
-            values: {},
-            errors: err.errors.reduce((acc: any, e: any) => {
-              acc[e.path[0]] = { message: e.message, type: e.code };
-              return acc;
-            }, {}),
-          };
-        }
-        throw err;
-      }
-    },
+    resolver,
   });
 
   useEffect(() => {
-      setValue('search', search);
-      filters.forEach((filter) => {
-        if (filter.name === 'search' && storedFilters[filter.name as FilterNames]) {
-          setValue(filter.name, storedFilters[filter.name]);
-        }
-      });
+    setValue('search', search);
+    filters.forEach((filter) => {
+      if (filter.name === 'search' && storedFilters[filter.name as FilterNames]) {
+        setValue(filter.name, storedFilters[filter.name]);
+      }
+    });
   }, [search, storedFilters, setValue, filters]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {

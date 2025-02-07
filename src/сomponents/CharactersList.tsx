@@ -3,6 +3,9 @@ import { useRouter } from 'next/router';
 import { useGetCharactersQuery } from '../services/charactersApi';
 import { Character } from '@/types/character';
 import SearchFilterForm from './SearchFilterForm';
+import Image from 'next/image';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+
 
 const CharactersList: React.FC = () => {
   const router = useRouter();
@@ -60,11 +63,18 @@ const CharactersList: React.FC = () => {
 
   if (isLoading) return <div className="text-center text-xl font-semibold">Loading...</div>;
 
-  if (error) {
-    if ((error as any).status === 404) {
+  if (error && 'status' in error) {
+    const fetchError = error as FetchBaseQueryError;
+  
+    if (fetchError.status === 404) {
       return <p className="text-center text-gray-500">No characters found. Try a different search.</p>;
     }
-    return <div className="text-center text-red-500 font-semibold">Error: {(error as any).message}</div>;
+  
+    return (
+      <div className="text-center text-red-500 font-semibold">
+        Error: {'error' in fetchError ? fetchError.error : 'Unknown error'}
+      </div>
+    );
   }
 
   const totalPages = data?.info?.pages || 1;
@@ -142,8 +152,16 @@ const CharactersList: React.FC = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {data?.results?.map((character: Character) => (
-          <div key={character.id} className="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300" onClick={() => handleCharacterClick(character.id)}>
-            <img src={character.image} alt={character.name} className="w-full h-64 object-cover rounded-lg mb-4" />
+          <div key={character.id} className="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300"
+            onClick={() => handleCharacterClick(character.id)}>
+            <Image 
+              src={character.image}
+              alt={character.name}
+              width={200}
+              height={200}
+              unoptimized
+              className="w-full h-64 object-cover rounded-lg mb-4"
+            />
             <h3 className="text-xl font-semibold text-gray-800 text-center">{character.name}</h3>
             <p className="text-center text-gray-400">{character.species}</p>
           </div>
